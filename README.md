@@ -15,8 +15,8 @@ Licence
 [Apache 2 License][L1]
 
 [L1]: http://www.apache.org/licenses/LICENSE-2.0
-[L5]: Old
-[L6]: New
-[L2]: New/src/DBCreationScript.sql
-[L3]: New/src/Tests/Integration/Tests.cs
+[L5]: old
+[L6]: new
+[L2]: new/src/DBCreationScript.sql
+[L3]: new/src/Tests/Integration/Tests.cs
 [L0]: https://www.pluralsight.com/courses/pragmatic-unit-testing

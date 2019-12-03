@@ -1,10 +1,10 @@
 _NCrunch_*
 bin
 obj
-Old/packages/*
-New/packages/*
-Old/.vs/*
-New/.vs/*
+old/packages/*
+new/packages/*
+old/.vs/*
+new/.vs/*
 *.ncrunchproject
 *.suo
 *.ncrunchsolution.*
