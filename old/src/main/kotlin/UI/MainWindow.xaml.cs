@@ -1,4 +1,4 @@
-﻿namespace AutoBuyer.UI
+namespace AutoBuyer.UI
 {
     public partial class MainWindow
     {

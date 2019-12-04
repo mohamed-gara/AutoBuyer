@@ -1,107 +1,93 @@
-﻿using AutoBuyer.Logic;
-using Moq;
-using Xunit;
+﻿import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import org.junit.jupiter.api.Test
 
-namespace Tests
-{
-    public class BuyerTests
-    {
-        [Fact]
-        public void Closes_when_item_closes()
-        {
-            var mock = Mock<IBuyerListener>();
-            var sut = Buyer("ItemId", 10, 1, null);
-            sut.AddBuyerListener(mock.Object);
+class BuyerTests {
+    @Test
+    fun closes_when_item_closes() {
+        val listener = mock<IBuyerListener>()
+        val sut = Buyer("ItemId", 10, 1, null)
+        sut.addBuyerListener(listener)
 
-            sut.ItemClosed();
+        sut.itemClosed()
 
-            mock.Verify(x => x.BuyerStateChanged(BuyerSnapshot("ItemId", 0, 0, 0, BuyerState.Closed)));
-        }
+        verify(listener).buyerStateChanged(BuyerSnapshot("ItemId", 0, 0, 0, BuyerState.Closed))
+    }
 
-        [Fact]
-        public void Buyer_does_not_buy_when_price_event_with_too_high_price_arrives()
-        {
-            var mock = Mock<IBuyerListener>();
-            var sut = Buyer("ItemId", 10, 1, null);
-            sut.AddBuyerListener(mock.Object);
+    @Test
+    fun buyer_does_not_buy_when_price_event_with_too_high_price_arrives() {
+        val mock = mock<IBuyerListener>()
+        val sut = Buyer("ItemId", 10, 1, null)
+        sut.addBuyerListener(mock)
 
-            sut.CurrentPrice(20, 5);
+        sut.currentPrice(20, 5)
 
-            mock.Verify(x => x.BuyerStateChanged(BuyerSnapshot("ItemId", 20, 5, 0, BuyerState.Monitoring)));
-        }
+        verify(mock).buyerStateChanged(BuyerSnapshot("ItemId", 20, 5, 0, BuyerState.Monitoring))
+    }
 
-        [Fact]
-        public void Buyer_buys_when_price_event_with_appropriate_price_arrives()
-        {
-            var listener = Mock<IBuyerListener>();
-            var stockItem = Mock<IStockItem>();
-            var sut = Buyer("ItemId", 50, 1, stockItem.Object);
-            sut.AddBuyerListener(listener.Object);
+    @Test
+    fun buyer_buys_when_price_event_with_appropriate_price_arrives() {
+        val listener = mock<IBuyerListener>()
+        val stockItem = mock<IStockItem>()
+        val sut = Buyer("ItemId", 50, 1, stockItem)
+        sut.addBuyerListener(listener)
 
-            sut.CurrentPrice(10, 5);
+        sut.currentPrice(10, 5)
 
-            listener.Verify(x => x.BuyerStateChanged(BuyerSnapshot("ItemId", 10, 5, 0, BuyerState.Buying)));
-            stockItem.Verify(x => x.Buy(10, 1));
-        }
+        verify(listener).buyerStateChanged(BuyerSnapshot("ItemId", 10, 5, 0, BuyerState.Buying))
+        verify(stockItem).buy(10, 1)
+    }
 
-        [Fact]
-        public void Buyer_attempts_to_buy_maximum_amount_available()
-        {
-            var stockItem = Mock<IStockItem>();
-            var sut = Buyer("ItemId", 50, 10, stockItem.Object);
+    @Test
+    fun buyer_attempts_to_buy_maximum_amount_available() {
+        val stockItem = mock<IStockItem>()
+        val sut = Buyer("ItemId", 50, 10, stockItem)
 
-            sut.CurrentPrice(10, 5);
+        sut.currentPrice(10, 5)
 
-            stockItem.Verify(x => x.Buy(10, 5));
-        }
+        verify(stockItem).buy(10, 5)
+    }
 
-        [Fact]
-        public void Buyer_does_not_react_to_a_purchase_event_related_to_another_buyer()
-        {
-            var stockItem = Mock<IStockItem>(MockBehavior.Strict);
-            var sut = new Buyer("ItemId", 10, 1, stockItem.Object);
-            sut.CurrentPrice(100, 5);
+    @Test fun buyer_does_not_react_to_a_purchase_event_related_to_another_buyer() {
+        val stockItem = mock<IStockItem>()
+        val sut = Buyer("ItemId", 10, 1, stockItem)
+        sut.currentPrice(100, 5)
 
-            sut.ItemPurchased(1, PurchaseSource.FromOtherBuyer);
-        }
+        sut.itemPurchased(1, PurchaseSource.FromOtherBuyer)
+    }
 
-        [Fact]
-        public void Buyer_updates_items_bought_so_far_when_purchase_event_with_the_same_user_name_arrives()
-        {
-            var listener = new Mock<IBuyerListener>();
-            var sut = new Buyer("ItemId", 10, 10, null);
-            sut.AddBuyerListener(listener.Object);
-            sut.CurrentPrice(50, 10);
+    @Test
+    fun buyer_updates_items_bought_so_far_when_purchase_event_with_the_same_user_name_arrives() {
+        val listener = mock<IBuyerListener>()
+        val sut = Buyer("ItemId", 10, 10, null)
+        sut.addBuyerListener(listener)
+        sut.currentPrice(50, 10)
 
-            sut.ItemPurchased(1, PurchaseSource.FromBuyer);
+        sut.itemPurchased(1, PurchaseSource.FromBuyer)
 
-            listener.Verify(x => x.BuyerStateChanged(new BuyerSnapshot("ItemId", 50, 9, 1, BuyerState.Monitoring)));
-        }
+        verify(listener).buyerStateChanged(BuyerSnapshot("ItemId", 50, 9, 1, BuyerState.Monitoring))
+    }
 
-        [Fact]
-        public void Buyer_closes_when_it_buys_enough_items()
-        {
-            var listener = new Mock<IBuyerListener>();
-            var sut = new Buyer("ItemId", 10, 5, null);
-            sut.AddBuyerListener(listener.Object);
-            sut.CurrentPrice(50, 10);
+    @Test fun buyer_closes_when_it_buys_enough_items() {
+        val listener = mock<IBuyerListener>()
+        val sut = Buyer("ItemId", 10, 5, null)
+        sut.addBuyerListener(listener)
+        sut.currentPrice(50, 10)
 
-            sut.ItemPurchased(5, PurchaseSource.FromBuyer);
+        sut.itemPurchased(5, PurchaseSource.FromBuyer)
 
-            listener.Verify(x => x.BuyerStateChanged(new BuyerSnapshot("ItemId", 50, 5, 5, BuyerState.Closed)));
-        }
+        verify(listener).buyerStateChanged(BuyerSnapshot("ItemId", 50, 5, 5, BuyerState.Closed))
+    }
 
-        [Fact]
-        public void Closed_buyer_does_not_react_to_further_messages_()
-        {
-            var listener = new Mock<IBuyerListener>(MockBehavior.Strict);
-            listener.Setup(x => x.BuyerStateChanged(new BuyerSnapshot("ItemId", 0, 0, 0, BuyerState.Closed)));
-            var stockItem = new Mock<IStockItem>(MockBehavior.Strict);
-            var sut = new Buyer("ItemId", 10, 10, stockItem.Object);
-            sut.AddBuyerListener(listener.Object);
-            sut.ItemClosed();
+    @Test fun closed_buyer_does_not_react_to_further_messages_() {
+        val listener = mock<IBuyerListener>()
+        val stockItem = mock<IStockItem>()
+        val sut = Buyer("ItemId", 10, 10, stockItem)
+        sut.addBuyerListener(listener)
+        sut.itemClosed()
 
-            sut.CurrentPrice(10, 10);
-        }
+        sut.currentPrice(10, 10)
+
+        verify(listener).buyerStateChanged(BuyerSnapshot("ItemId", 0, 0, 0, BuyerState.Closed))
     }
 }

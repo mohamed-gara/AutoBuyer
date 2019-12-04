@@ -3,11 +3,11 @@
     private val listeners = arrayListOf<IBuyerListener>();
     private val maximumPrice: Int
     private val numberToBuy: Int
-    private val aStockitem: IStockItem
+    private val aStockitem: IStockItem?
     var snapshot: BuyerSnapshot
         private set
 
-    constructor(itemId: String, maximumPrice: Int, numberToBuy: Int, aStockItem: IStockItem) {
+    constructor(itemId: String, maximumPrice: Int, numberToBuy: Int, aStockItem: IStockItem?) {
         this.numberToBuy = numberToBuy
         this.maximumPrice = maximumPrice
         aStockitem = aStockItem
@@ -26,7 +26,7 @@
             snapshot = snapshot.monitoring(price, numberInStock);
         } else {
             val number = Math.min(numberInStock, numberToBuy)
-            aStockitem.buy(price, number)
+            aStockitem?.buy(price, number)
             snapshot = snapshot.buying(price, numberInStock)
         }
         notifyChange();

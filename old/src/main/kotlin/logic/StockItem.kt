@@ -7,7 +7,7 @@ class StockItem : IStockItem {
     constructor(connection: IStockItemConnection) {
         this.connection = connection;
         translator = StockMessageTranslator(connection.buyerName);
-        connection.messageReceived(TranslateMessage);
+        //connection.messageReceived(TranslateMessage);
     }
 
     override fun buy(price: Int, numberToBuy: Int) {
