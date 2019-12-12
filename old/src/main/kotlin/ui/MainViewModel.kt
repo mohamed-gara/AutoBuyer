@@ -1,4 +1,5 @@
-﻿class MainViewModel : IBuyerListener, IPortfolioListener {
+﻿/*
+class MainViewModel : IBuyerListener, IPortfolioListener {
     private val listeners: List<IUserRequestListener>
 
     val buyers: ObservableCollection<BuyerViewModel>
@@ -38,3 +39,4 @@
     }
 }
 }
+*/

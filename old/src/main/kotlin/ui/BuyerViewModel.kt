@@ -1,4 +1,5 @@
-﻿class BuyerViewModel : ViewModel {
+﻿/*
+class BuyerViewModel : ViewModel {
     val itemId:String
     var currentPrice:String = ""
         private set
@@ -27,3 +28,4 @@
         notify(nameof(state))
     }
 }
+*/

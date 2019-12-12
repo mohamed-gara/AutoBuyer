@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ui.HelloController">
+    <top>
+        <StackPane GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <Label style="-fx-padding: 3;">New item Id:</Label>
+            <TextField text="{Binding Path=NewItemId}" maxWidth="70" style="-fx-padding: 3;"/>
+            <Label style="-fx-padding: 3;">New item max price:</Label>
+            <TextField text="{Binding Path=NewItemMaximumPrice}" minWidth="70" style="-fx-padding: 3;"/>
+            <Label style="-fx-padding: 3;">Number to buy:</Label>
+            <TextField text="{Binding Path=NumberToBuy}" minWidth="70" style="-fx-padding: 3;"/>
+            <Button onAction="#startBuyingCommand" style="-fx-padding: 3;" text="Start buying"/>
+        </StackPane>
+    </top>
+    <center>
+        <TableView fx:id="tableView" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <columns>
+                <TableColumn text="First Name">
+                </TableColumn>
+                <TableColumn text="Last Name">
+                </TableColumn>
+                <TableColumn text="Email Address">
+                </TableColumn>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

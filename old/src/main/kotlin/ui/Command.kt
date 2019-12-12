@@ -1,4 +1,5 @@
-﻿class Command : ICommand {
+﻿/*
+class Command : ICommand {
     private val execute: () -> Unit
 
     event EventHandler CanExecuteChanged
@@ -22,3 +23,4 @@
     }
 }
 
+*/

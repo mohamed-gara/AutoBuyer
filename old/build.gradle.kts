@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.3.31"
+    id("org.openjfx.javafxplugin") version "0.0.8"
 }
 
 repositories {
@@ -26,4 +27,9 @@ tasks.test {
 
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+javafx {
+  version = "13"
+  modules("javafx.controls", "javafx.fxml")
 }

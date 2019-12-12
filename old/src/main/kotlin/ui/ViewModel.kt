@@ -1,4 +1,5 @@
-﻿abstract class ViewModel : INotifyPropertyChanged
+﻿/*
+abstract class ViewModel : INotifyPropertyChanged
     {
         //public event PropertyChangedEventHandler PropertyChanged;
 
@@ -7,3 +8,4 @@
         }
     }
 
+*/

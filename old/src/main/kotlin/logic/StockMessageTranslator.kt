@@ -19,7 +19,7 @@ class StockMessageTranslator {
             Price -> notify {it.currentPrice(stockEvent.currentprice, stockEvent.numberInStock)}
             Purchase -> notify {it.itemPurchased(stockEvent.numberSold, getEventSource(stockEvent.buyerName))}
             Close -> notify {it.itemClosed()}
-            else -> throw IndexOutOfBoundsException()
+            // else -> throw IndexOutOfBoundsException()
         }
     }
 
